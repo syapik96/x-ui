@@ -25,46 +25,46 @@ elif cat /proc/version | grep -Eqi "centos|red hat|redhat"; then
     release="centos"
 else
     echo -e "The system version of ${red} is not detected, please contact the script author! ${plain}\n" && exit 1
-be
+fi
 
 os_version=""
 
 # os version
 if [[ -f /etc/os-release ]]; then
     os_version=$(awk -F'[= ."]' '/VERSION_ID/{print $3}' /etc/os-release)
-be
+fi
 if [[ -z "$os_version" && -f /etc/lsb-release ]]; then
     os_version=$(awk -F'[= ."]+' '/DISTRIB_RELEASE/{print $2}' /etc/lsb-release)
-be
+fi
 
 if [[ x"${release}" == x"centos" ]]; then
     if [[ ${os_version} -le 6 ]]; then
         echo -e "${red} Please use CentOS 7 or higher version system! ${plain}\n" && exit 1
-    be
+    fi
 elif [[ x"${release}" == x"ubuntu" ]]; then
     if [[ ${os_version} -lt 16 ]]; then
         echo -e "${red}Please use Ubuntu 16 or higher version system! ${plain}\n" && exit 1
-    be
+    fi
 elif [[ x"${release}" == x"debian" ]]; then
     if [[ ${os_version} -lt 8 ]]; then
         echo -e "${red} Please use Debian 8 or higher version system! ${plain}\n" && exit 1
-    be
-be
+    fi
+fi
 
 confirm() {
     if [[ $# > 1 ]]; then
         echo && read -p "$1 [默认$2]: " temp
         if [[ x"${temp}" == x"" ]]; then
             temp=$2
-        be
+        fi
     else
         read -p "$1 [y/n]: " temp
-    be
+    fi
     if [[ x"${temp}" == x"y" || x"${temp}" == x"Y" ]]; then
         return 0
     else
         return 1
-    be
+    fi
 }
 
 confirm_restart() {
@@ -73,7 +73,7 @@ confirm_restart() {
         restart
     else
         show_menu
-    be
+    fi
 }
 
 before_show_menu() {
@@ -82,30 +82,30 @@ before_show_menu() {
 }
 
 install() {
-    bash <(curl -Ls https://blog.sprov.xyz/x-ui.sh)
+    bash <(curl -Ls https://raw.githubusercontent.com/vaxilu/x-ui/master/install.sh)
     if [[ $? == 0 ]]; then
         if [[ $# == 0 ]]; then
             start
         else
             start 0
-        be
-    be
+        fi
+    fi
 }
 
 update() {
-    confirm "This function will forcibly reinstall the current latest version, and the data will not be lost. Do you want to continue?" "n"
+    confirm "This function will forcibly reinstall the current latest version, and the data will not fi lost. Do you want to continue?" "n"
     if [[ $? != 0 ]]; then
         echo -e "${red} cancelled ${plain}"
         if [[ $# == 0 ]]; then
             before_show_menu
-        be
+        fi
         return 0
-    be
-    bash <(curl -Ls https://raw.githubusercontent.com/sprov065/x-ui/master/install.sh)
+    fi
+    bash <(curl -Ls https://raw.githubusercontent.com/vaxilu/x-ui/master/install.sh)
     if [[ $? == 0 ]]; then
         echo -e "${green} has been updated and the panel has been restarted automatically ${plain}"
         exit 0
-    be
+    fi
 }
 
 uninstall() {
@@ -113,9 +113,9 @@ uninstall() {
     if [[ $? != 0 ]]; then
         if [[ $# == 0 ]]; then
             show_menu
-        be
+        fi
         return 0
-    be
+    fi
     systemctl stop x-ui
     systemctl disable x-ui
     rm /etc/systemd/system/x-ui.service -f
@@ -133,7 +133,7 @@ uninstall() {
 
     if [[ $# == 0 ]]; then
         before_show_menu
-    be
+    fi
 }
 
 reset_user() {
@@ -141,22 +141,22 @@ reset_user() {
     if [[ $? != 0 ]]; then
         if [[ $# == 0 ]]; then
             show_menu
-        be
+        fi
         return 0
-    be
+    fi
     /usr/local/x-ui/x-ui setting -username admin -password admin
     echo -e "Username and password have been reset to ${green}admin${plain}, please restart the panel now"
     confirm_restart
 }
 
 reset_config() {
-    confirm "Are you sure you want to reset all panel settings, account data will not be lost, username and password will not be changed" "n"
+    confirm "Are you sure you want to reset all panel settings, account data will not fi lost, username and password will not fi changed" "n"
     if [[ $? != 0 ]]; then
         if [[ $# == 0 ]]; then
             show_menu
-        be
+        fi
         return 0
-    be
+    fi
     /usr/local/x-ui/x-ui setting -reset
     echo -e "All panel settings have been reset to default values, now please restart the panel and use the default ${green}54321${plain} port access panel"
     confirm_restart
@@ -171,7 +171,7 @@ set_port() {
         /usr/local/x-ui/x-ui setting -port ${port}
         echo -e "After setting the port, please restart the panel and use the newly set port ${green}${port}${plain} to access the panel"
         confirm_restart
-    be
+    fi
 }
 
 start() {
@@ -186,13 +186,13 @@ start() {
         if [[ $? == 0 ]]; then
             echo -e "${green}x-ui started successfully ${plain}"
         else
-            echo -e "The startup of the ${red} panel failed. It may be because the startup time exceeds two seconds. Please check the log information later ${plain}"
-        be
-    be
+            echo -e "The startup of the ${red} panel failed. It may fi because the startup time exceeds two seconds. Please check the log information later ${plain}"
+        fi
+    fi
 
     if [[ $# == 0 ]]; then
         before_show_menu
-    be
+    fi
 }
 
 stop() {
@@ -207,13 +207,13 @@ stop() {
         if [[ $? == 1 ]]; then
             echo -e "${green}x-ui and xray stopped successfully ${plain}"
         else
-            echo -e "The ${red} panel failed to stop. It may be because the stop time exceeds two seconds. Please check the log information later ${plain}"
-        be
-    be
+            echo -e "The ${red} panel failed to stop. It may fi because the stop time exceeds two seconds. Please check the log information later ${plain}"
+        fi
+    fi
 
     if [[ $# == 0 ]]; then
         before_show_menu
-    be
+    fi
 }
 
 restart() {
@@ -223,18 +223,18 @@ restart() {
     if [[ $? == 0 ]]; then
         echo -e "${green}x-ui and xray restart successfully ${plain}"
     else
-        echo -e "The restart of the ${red} panel failed. It may be because the startup time exceeds two seconds. Please check the log information later ${plain}"
-    be
+        echo -e "The restart of the ${red} panel failed. It may fi because the startup time exceeds two seconds. Please check the log information later ${plain}"
+    fi
     if [[ $# == 0 ]]; then
         before_show_menu
-    be
+    fi
 }
 
 status() {
     systemctl status x-ui -l
     if [[ $# == 0 ]]; then
         before_show_menu
-    be
+    fi
 }
 
 enable() {
@@ -243,11 +243,11 @@ enable() {
         echo -e "${green}x-ui set the startup to start successfully ${plain}"
     else
         echo -e "${red}x-ui failed to set self-start after booting ${plain}"
-    be
+    fi
 
     if [[ $# == 0 ]]; then
         before_show_menu
-    be
+    fi
 }
 
 disable() {
@@ -256,18 +256,18 @@ disable() {
         echo -e "${green}x-ui cancel the boot-up self-start successfully ${plain}"
     else
         echo -e "${red}x-ui Cancel boot-up self-start failure ${plain}"
-    be
+    fi
 
     if [[ $# == 0 ]]; then
         before_show_menu
-    be
+    fi
 }
 
 show_log() {
     journalctl -u x-ui.service -e --no-pager -f
     if [[ $# == 0 ]]; then
         before_show_menu
-    be
+    fi    
 }
 
 migrate_v2_ui() {
@@ -277,13 +277,13 @@ migrate_v2_ui() {
 }
 
 install_bbr() {
-    bash <(curl -L -s https://raw.githubusercontent.com/sprov065/blog/master/bbr.sh)
+    bash <(curl -L -s https://raw.githubusercontent.com/teddysun/across/master/bbr.sh)
     echo ""
     before_show_menu
 }
 
 update_shell() {
-    wget -O /usr/bin/x-ui -N --no-check-certificate https://github.com/sprov065/x-ui/raw/master/x-ui.sh
+    wget -O /usr/bin/x-ui -N --no-check-certificate https://github.com/vaxilu/x-ui/raw/master/x-ui.sh
     if [[ $? != 0 ]]; then
         echo ""
         echo -e "${red} failed to download the script, please check whether the machine can connect to Github${plain}"
@@ -291,20 +291,20 @@ update_shell() {
     else
         chmod +x /usr/bin/x-ui
         echo -e "${green} upgrade script is successful, please re-run the script ${plain}" && exit 0
-    be
+    fi
 }
 
 # 0: running, 1: not running, 2: not installed
 check_status() {
     if [[ ! -f /etc/systemd/system/x-ui.service ]]; then
         return 2
-    be
+    fi
     temp=$(systemctl status x-ui | grep Active | awk '{print $3}' | cut -d "(" -f2 | cut -d ")" -f1)
     if [[ x"${temp}" == x"running" ]]; then
         return 0
     else
         return 1
-    be
+    fi
 }
 
 check_enabled() {
@@ -313,7 +313,7 @@ check_enabled() {
         return 0
     else
         return 1;
-    be
+    fi
 }
 
 check_uninstall() {
@@ -323,11 +323,11 @@ check_uninstall() {
         echo -e "The ${red} panel has been installed, please do not install ${plain} repeatedly"
         if [[ $# == 0 ]]; then
             before_show_menu
-        be
+        fi
         return 1
     else
         return 0
-    be
+    fi
 }
 
 check_install() {
@@ -337,11 +337,11 @@ check_install() {
         echo -e "${red} Please install the panel first ${plain}"
         if [[ $# == 0 ]]; then
             before_show_menu
-        be
+        fi
         return 1
     else
         return 0
-    be
+    fi
 }
 
 show_status() {
@@ -367,7 +367,7 @@ show_enable_status() {
         echo -e "Whether to start automatically after booting: ${green} is ${plain}"
     else
         echo -e "Whether to start automatically after booting: ${red} No ${plain}"
-    be
+    fi
 }
 
 check_xray_status() {
@@ -376,7 +376,7 @@ check_xray_status() {
         return 0
     else
         return 1
-    be
+    fi
 }
 
 show_xray_status() {
@@ -385,7 +385,7 @@ show_xray_status() {
         echo -e "xray status: ${green} running ${plain}"
     else
         echo -e "xray status: ${red} is not running ${plain}"
-    be
+    fi
 }
 
 show_usage() {
@@ -499,4 +499,4 @@ if [[ $# > 0 ]]; then
     esac
 else
     show_menu
-be
+fi
