@@ -93,7 +93,7 @@ install() {
 }
 
 update() {
-    confirm "This function will forcibly reinstall the current latest version, and the data will not fi lost. Do you want to continue?" "n"
+    confirm "This function will forcibly reinstall the current latest version, and the data will not be lost. Do you want to continue?" "n"
     if [[ $? != 0 ]]; then
         echo -e "${red} cancelled ${plain}"
         if [[ $# == 0 ]]; then
@@ -150,7 +150,7 @@ reset_user() {
 }
 
 reset_config() {
-    confirm "Are you sure you want to reset all panel settings, account data will not fi lost, username and password will not fi changed" "n"
+    confirm "Are you sure you want to reset all panel settings, account data will not fi lost, username and password will not be changed" "n"
     if [[ $? != 0 ]]; then
         if [[ $# == 0 ]]; then
             show_menu
@@ -186,7 +186,7 @@ start() {
         if [[ $? == 0 ]]; then
             echo -e "${green}x-ui started successfully ${plain}"
         else
-            echo -e "The startup of the ${red} panel failed. It may fi because the startup time exceeds two seconds. Please check the log information later ${plain}"
+            echo -e "The startup of the ${red} panel failed. It may be because the startup time exceeds two seconds. Please check the log information later ${plain}"
         fi
     fi
 
